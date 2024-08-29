@@ -20,7 +20,6 @@ const client = new MongoClient(uri, {
 });
 
 
-const coffeeCollection = client.db("coffeeDB").collection("coffee");
 const userCollection = client.db("coffeeDB").collection("user");
 
 const dbConnect = async () => {
