@@ -58,8 +58,8 @@ const SingleRegistration = () => {
             })
             .then(
                 () => {
+                    
                     Swal.fire({ position: "top-end", icon: "success", title:`An email has been sent to ${toName}`, showConfirmButton: false, timer: 1500 });
-
                 },
                 (error) => {
                     console.log('FAILED...', error.text);
