@@ -21,7 +21,7 @@ const RegistrationList = () => {
                             <tr className="text-xl font-medium">
                                 <th>APPLICATION ID</th>
                                 <th>STUDENT NAME</th>
-                                <th>STATUS</th>
+                                <th>Counsellor</th>
                                 <th>DATE ADDED</th>
                                 <th>ACTION</th>
                             </tr>
