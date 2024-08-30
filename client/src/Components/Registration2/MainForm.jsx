@@ -3,80 +3,83 @@ import Form2 from './Form2';
 import logo from '../../assets/Group.svg'
 import useAxiosPublic from '../Hooks/useAxiosPublic';
 import { extractDateTime } from '../Tools/Time';
-import Swal from 'sweetalert2';
+import ThankYouModal from '../ThankYouModal';
+
+
 const MainForm = () => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [mobileNo, setMobileNO] = useState('')
-  const [email, setEmail] = useState('')
-  const [academic, setAcademic] = useState('')
-  const [course, setCourse] = useState('')
-  const [university, setUniversity] = useState('')
-  const [selected, setSelected] = useState(0)
-  const [errors, setErrors] = useState([])
-  const [firstFormData, setFirstFormData] = useState("")
-  const axiosPublic = useAxiosPublic()
-  const time = extractDateTime()
-  const message = `You have meeting with  ${firstName && firstName} ${lastName && lastName}`
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [mobileNo, setMobileNO] = useState('');
+  const [email, setEmail] = useState('');
+  const [academic, setAcademic] = useState('');
+  const [course, setCourse] = useState('');
+  const [university, setUniversity] = useState('');
+  const [selected, setSelected] = useState(0);
+  const [errors, setErrors] = useState([]);
+  const [firstFormData, setFirstFormData] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const axiosPublic = useAxiosPublic();
+  const time = extractDateTime();
+  const message = `You have meeting with ${firstName && firstName} ${lastName && lastName}`;
 
   const addError = (e) => {
     setErrors(prevErrors => [...prevErrors, e]);
-  }
+  };
 
   const form = useRef();
-
 
   const sendEmail = (e) => {
     e.preventDefault();
     if (!firstName) {
-      addError(1)
+      addError(1);
     } if (!lastName) {
-      addError(2)
+      addError(2);
     } if (!mobileNo) {
-      addError(3)
+      addError(3);
     } if (!email) {
-      addError(4)
+      addError(4);
     } if (!academic) {
-      addError(5)
+      addError(5);
     } if (!course) {
-      addError(6)
+      addError(6);
     } if (!university) {
-      addError(7)
+      addError(7);
     } else {
       axiosPublic.post('/registrations', { formData: firstFormData, cpName: '', cpMail: '', time: time })
         .then(res => {
-          if (res.status == 200) {
-            Swal.fire({ position: "top-end", icon: "success", title: "Your form has been submitted", showConfirmButton: false, timer: 1500 });
+          if (res.status === 200) {
+            setIsModalOpen(true); // Open the modal on success
 
             setTimeout(() => {
-              location.reload()
-
-            }, (1000));
+              location.reload();
+            }, 5000); // Delay to close the modal
           }
         })
-
+        .catch(error => {
+          console.error('Form submission error:', error);
+        });
     }
-  }
+  };
 
   useEffect(() => {
-    const data = { firstName: firstName, lastName: lastName, mobileNo: mobileNo, email: email, academic: academic, course: course, university: university }
-    setFirstFormData(data)
-  }, [setFirstFormData, firstName, lastName, mobileNo, email, academic, course, university])
+    const data = { firstName, lastName, mobileNo, email, academic, course, university };
+    setFirstFormData(data);
+  }, [firstName, lastName, mobileNo, email, academic, course, university]);
 
   return (
     <div className='max-w-5xl mx-auto'>
       <div className="flex flex-col px-10 bg-white shadow-lg min-h-screen">
         <div>
-          <div className='flex  gap-5 items-start justify-center mt-10'>
+          <div className='flex gap-5 items-start justify-center mt-10'>
             <img className='pt-1 lg:pt-2 w-[40px] lg:w-fit' src={logo} alt="" />
-            <div className=" my-auto ">
+            <div className="my-auto">
               <h1 className='text-center font-semibold text-xl md:text-3xl lg:text-5xl'>Shabuj Global Education</h1>
               <p className='text-end font-medium text-xs md:text-base lg:text-xl'>Dhanmondi Branch</p>
             </div>
           </div>
         </div>
         <div className='h-full my-auto'>
-          <div className="grid  gap-5 ">
+          <div className="grid gap-5">
             <div className='flex gap-5'>
               <Form2 int={1} label='Student First Name' state={firstName} setState={setFirstName} placeholder='John' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
               <Form2 int={2} label='Student Last Name' state={lastName} setState={setLastName} placeholder='Doe' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
@@ -91,12 +94,11 @@ const MainForm = () => {
             <div className="flex gap-2">
               <textarea className='hidden' value={`${message} \n Please be on time`} name="message" />
             </div>
-            <button type="submit" value="Send" className="btn w-full  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
-
+            <button type="submit" value="Send" className="btn w-full lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10 font-bold">Submit</button>
           </form>
         </div>
-
       </div>
+      <ThankYouModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };
