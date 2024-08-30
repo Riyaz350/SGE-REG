@@ -1,73 +1,104 @@
-import  { useEffect, useState } from 'react';
-import Form from './Form';
+import { useEffect, useRef, useState } from 'react';
 import Form2 from './Form2';
-
-const MainForm = ( ) => {
+import logo from '../../assets/Group.svg'
+import useAxiosPublic from '../Hooks/useAxiosPublic';
+import { extractDateTime } from '../Tools/Time';
+import Swal from 'sweetalert2';
+const MainForm = () => {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [mobileNo, setMobileNO] = useState('')
+  const [email, setEmail] = useState('')
+  const [academic, setAcademic] = useState('')
+  const [course, setCourse] = useState('')
+  const [university, setUniversity] = useState('')
   const [selected, setSelected] = useState(0)
-  const [serial, setSerial] = useState(0)
-    const [errors, setErrors] = useState([])
-    const [country, setCountry] = useState("")
-    const [season, setSeason] = useState("")
-    const [typeOfCourse, setTypeOfCourse] = useState("")
-    const [firstName, setFirstName] = useState('')
-    const [applicantCountry, setApplicantCountry] = useState("")
-    const [firstFormData, setFirstFormData] = useState("")
-    
-    const countries = ['Bangladesh', 'India', 'Nigeria', 'Bhutan', 'Ghana', 'Sri Lanka']
-    const countries2 = ['UK', 'USA','Germany','New Zealand', 'Australia','UAE']
-    const intake = ['September 2025', 'July 2026']
-    const typesOfCourses = ['Undergraduate', 'Postgraduate']
+  const [errors, setErrors] = useState([])
+  const [firstFormData, setFirstFormData] = useState("")
+  const axiosPublic = useAxiosPublic()
+  const time = extractDateTime()
+  const message = `You have meeting with  ${firstName && firstName} ${lastName && lastName}`
 
-    const filter = (data,category) => {
-        return [...new Set(data.map((uni) => uni?.[category]))];
-      }
+  const addError = (e) => {
+    setErrors(prevErrors => [...prevErrors, e]);
+  }
 
-    
+  const form = useRef();
 
-      const addError = (e)=>{
-        setErrors(prevErrors => [...prevErrors, e]);
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    if (!firstName) {
+      addError(1)
+    } if (!lastName) {
+      addError(2)
+    } if (!mobileNo) {
+      addError(3)
+    } if (!email) {
+      addError(4)
+    } if (!academic) {
+      addError(5)
+    } if (!course) {
+      addError(6)
+    } if (!university) {
+      addError(7)
+    } else {
+      axiosPublic.post('/registrations', { formData: firstFormData, cpName: '', cpMail: '', time: time })
+        .then(res => {
+          if (res.status == 200) {
+            Swal.fire({ position: "top-end", icon: "success", title: "Your form has been submitted", showConfirmButton: false, timer: 1500 });
+
+            setTimeout(() => {
+              location.reload()
+
+            }, (1000));
+          }
+        })
+
     }
+  }
 
-      const handleNext =()=>{
-        if(!country){
-          addError(1)
-        } if(!applicantCountry){
-          addError(2)
-        } if(!season){
-          addError(3)
-        } if(!typeOfCourse){
-          addError(4)
-        } if(!uni){
-          addError(5)
-        } if(!course){
-          addError(6)
-        }else{
-          setSerial(serial+1)
-        }
-      }
+  useEffect(() => {
+    const data = { firstName: firstName, lastName: lastName, mobileNo: mobileNo, email: email, academic: academic, course: course, university: university }
+    setFirstFormData(data)
+  }, [setFirstFormData, firstName, lastName, mobileNo, email, academic, course, university])
 
-      useEffect(()=>{
-        const data = {country:country, season:season,  typeOfCourse:typeOfCourse, applicantCountry:applicantCountry, firstName: firstName}
-        setFirstFormData(data)
-      },[ setFirstFormData,applicantCountry, country,  season, typeOfCourse, firstName])
-
-    return (
-        <div className='max-w-5xl mx-auto'>
-            <div className="flex flex-col px-10 bg-white shadow-lg ">
-                    <h1 className="text-xl my-5">New Application</h1>
-                    <div  className="grid  gap-5">
-                        <Form int={1} label='Country to Apply' state={country} setState={setCountry}  dataArray={countries2} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
-                        <Form int={2} label='Country of Student Passport' state={applicantCountry}  setState={setApplicantCountry}  dataArray={countries} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors}/>
-                        <Form int={4} label='Course Type' state={typeOfCourse}  setState={setTypeOfCourse} dataArray={typesOfCourses} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors}/>
-                        <Form int={3} label='Intake' state={season}  setState={setSeason} dataArray={intake}  selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors}/>
-                        <Form2 label='Student First Name' state={firstName} setState={setFirstName} placeholder='John' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors}/>
-
-                    <button onClick={handleNext} className="btn w-fit  lg:ml-auto btn-primary text-lg text-white  font-bold mt-5">Next</button>
-                    </div>
-
-                </div>
+  return (
+    <div className='max-w-5xl mx-auto'>
+      <div className="flex flex-col px-10 bg-white shadow-lg min-h-screen">
+        <div>
+          <div className='flex  gap-5 items-start justify-center mt-10'>
+            <img className='pt-1 lg:pt-2 w-[40px] lg:w-fit' src={logo} alt="" />
+            <div className=" my-auto ">
+              <h1 className='text-center font-semibold text-xl md:text-3xl lg:text-5xl'>Shabuj Global Education</h1>
+              <p className='text-end font-medium text-xs md:text-base lg:text-xl'>Dhanmondi Branch</p>
+            </div>
+          </div>
         </div>
-    );
+        <div className='h-full my-auto'>
+          <div className="grid  gap-5 ">
+            <div className='flex gap-5'>
+              <Form2 int={1} label='Student First Name' state={firstName} setState={setFirstName} placeholder='John' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
+              <Form2 int={2} label='Student Last Name' state={lastName} setState={setLastName} placeholder='Doe' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
+            </div>
+            <Form2 int={3} label='Mobile No:' state={mobileNo} setState={setMobileNO} placeholder='+8801---------' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
+            <Form2 int={4} label='Email' state={email} setState={setEmail} placeholder='Email' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'email'} />
+            <Form2 int={5} label='Academic Qualification' state={academic} setState={setAcademic} placeholder='Intermediate' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
+            <Form2 int={6} label={`In which course you're interested?`} state={course} setState={setCourse} placeholder='CSE/English/Literature' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
+            <Form2 int={7} label={'Interested University'} state={university} setState={setUniversity} placeholder='Oxford/Angela Ruskin' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
+          </div>
+          <form ref={form} onSubmit={sendEmail} action="">
+            <div className="flex gap-2">
+              <textarea className='hidden' value={`${message} \n Please be on time`} name="message" />
+            </div>
+            <button type="submit" value="Send" className="btn w-full  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  );
 };
 
 export default MainForm;

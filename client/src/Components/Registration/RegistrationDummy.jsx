@@ -9,19 +9,22 @@ const RegistrationDummy = () => {
     const inputClass = "border-2 w-fit border-black border-opacity-30 rounded-lg"
     const sendEmail = (e) => {
         e.preventDefault();
-
-        emailjs
-            .sendForm('service_2xxhd3m', 'template_mt9dggc', form.current, {
-                publicKey: 'QnQYR25vUAQhCK0Rn',
-            })
-            .then(
-                () => {
-                    console.log('SUCCESS!');
-                },
-                (error) => {
-                    console.log('FAILED...', error.text);
-                },
-            );
+        console.log(form.current)
+        // emailjs
+        //     .sendForm(
+        //         'service_2xxhd3m', 
+        //         'template_mt9dggc', form.current, {
+        //         publicKey: 'QnQYR25vUAQhCK0Rn',
+        //     })
+        //     .then(
+        //         () => {
+        //             console.log(form.current)
+        //             console.log('SUCCESS!');
+        //         },
+        //         (error) => {
+        //             console.log('FAILED...', error.text);
+        //         },
+        //     );
     };
     return (
         <div>

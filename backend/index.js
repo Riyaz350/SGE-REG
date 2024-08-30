@@ -20,7 +20,7 @@ const client = new MongoClient(uri, {
 });
 
 
-const userCollection = client.db("coffeeDB").collection("user");
+const registrations = client.db("SGE_REG").collection("registrations");
 
 const dbConnect = async () => {
     try {
@@ -28,6 +28,17 @@ const dbConnect = async () => {
 
         app.get('/', async (req, res) => {
             res.send('Server is running')
+        })
+
+        app.get('/registrations', async (req, res) => {
+            const result = await registrations.find().toArray()
+            res.send(result)
+        })
+
+        app.post(`/registrations`, async (req, res) => {
+            const registration = req.body
+            const result = await registrations.insertOne(registration)
+            res.send(result)
         })
 
     } catch (error) {

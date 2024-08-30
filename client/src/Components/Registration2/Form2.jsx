@@ -1,8 +1,5 @@
 
-const Form2 = ({ int, label, state, setState, placeholder, selected, setSelected, errors, setErrors }) => {
-
-    const inputStyle = "input   text-[#0d3454] w-full      focus:placeholder:pl-2 transition-all duration-100"
-
+const Form2 = ({ int, label, state, setState, placeholder, selected, setSelected, errors, setErrors,type }) => {
 
     const Field = () => {
         return (<div className="label">
@@ -29,9 +26,9 @@ const Form2 = ({ int, label, state, setState, placeholder, selected, setSelected
                     setSelected(int)
                     setErrors((prevItems) => prevItems.filter(item => item !== int))
                     setState(e.target.value)
-                }} type="text" placeholder={placeholder} className={`p-2 outline-none  rounded-lg w-full  `} />
+                }} type={type? type :'text'} placeholder={placeholder} className={`p-2 outline-none  rounded-lg w-full  `} />
             </div>
-                {errors.includes(int) ? <Field /> : <></>}
+            {errors.includes(int) ? <Field /> : <></>}
         </div>
     );
 };

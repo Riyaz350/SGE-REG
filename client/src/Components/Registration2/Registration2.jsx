@@ -1,9 +1,9 @@
-import FirstForm from "./FirstForm";
+import MainForm from "./MainForm";
 
 const Registration2 = () => {
     return (
         <div>
-            <FirstForm/>
+            <MainForm/>
         </div>
     );
 };
