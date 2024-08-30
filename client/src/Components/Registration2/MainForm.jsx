@@ -53,8 +53,6 @@ const MainForm = () => {
   }
 
   const form = useRef();
-
-  console.log(errors)
   const sendEmail = (e) => {
     e.preventDefault();
     if (!firstName) {
@@ -108,7 +106,7 @@ const MainForm = () => {
           </div>
         </div>
         <div className='h-full my-auto'>
-          <form className="grid  gap-5 ">
+          <form onSubmit={sendEmail} className="grid  gap-5 ">
             <div className='flex gap-5'>
               <Form2 int={1} label='Student First Name' state={firstName} setState={setFirstName} placeholder='John' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'} />
               <Form2 int={2} label='Student Last Name' state={lastName} setState={setLastName} placeholder='Doe' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'}/>
@@ -121,7 +119,7 @@ const MainForm = () => {
             <Form  int={6} label='Select a country' state={country} setState={setCountry} dataArray={CPs} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'} />
             <Form2 int={7} label={`In which course you're interested?`} state={course} setState={setCourse} placeholder='CSE/English/Literature' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'} />
             <Form2 int={8} label={'Interested University'} state={university} setState={setUniversity} placeholder='Oxford/Angela Ruskin' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'} />          
-          <div ref={form} onSubmit={sendEmail} action="">
+          <div    action="">
             <div className="flex gap-2">
               <textarea className='hidden' value={`${message} \n Please be on time`} name="message" />
             </div>
