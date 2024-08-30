@@ -10,12 +10,17 @@ import LogIn from './Components/Authentication/LogIn.jsx';
 import AuthProvider from './Components/Authentication/AuthProvider.jsx';
 import RegistrationList from './Components/RegistrationList/RegistrationList.jsx';
 import SingleRegistration from './Components/RegistrationList/SingleRegistration.jsx';
+import LandingPage from './Components/Home/LandingPage.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
     children: [
+      {
+        path:'/',
+        element:<LandingPage/>
+      },
       {
         path: '/studentForm',
         // element: <Registration/>

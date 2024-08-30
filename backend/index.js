@@ -5,10 +5,20 @@ const port = process.env.PORT || 5000
 require('dotenv').config()
 
 //middleware
-app.use(cors())
+app.use(cors(
+    {
+
+        origin: ['http://localhost:5173',
+          'http://localhost:5174',
+          'https://shabuj-global-reg.web.app'
+        ],
+        credentials: true
+      
+      }
+))
 app.use(express.json())
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.gx7mkcg.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
@@ -40,6 +50,19 @@ const dbConnect = async () => {
             const result = await registrations.insertOne(registration)
             res.send(result)
         })
+
+        app.patch('/registrationPatchStatus/:_id', async (req, res) => {
+            const id = req.params._id
+            const query = { _id: new ObjectId(id) }
+            const updateDoc = {
+              $set: {
+                cpMail: req.body.counsellorMail,
+                cpName: req.body.counsellorName
+              }
+            }
+            const result = await registrations.updateOne(query, updateDoc)
+            res.send(result)
+          })
 
     } catch (error) {
         console.log(error.name, error.message);
