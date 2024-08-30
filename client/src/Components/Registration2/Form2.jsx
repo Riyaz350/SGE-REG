@@ -26,7 +26,7 @@ const Form2 = ({ int, label, state, setState, placeholder, selected, setSelected
                     setSelected(int)
                     setErrors((prevItems) => prevItems.filter(item => item !== int))
                     setState(e.target.value)
-                }} value={value && value } type={type? type :'text'} placeholder={placeholder} className={`p-2 outline-none  rounded-lg w-full  `} />
+                }} value={value && value } type={type} placeholder={placeholder} className={`p-2 outline-none  rounded-lg w-full  `} />
             </div>
             {errors.includes(int) ? <Field /> : <></>}
         </div>

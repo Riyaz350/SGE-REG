@@ -14,8 +14,8 @@ const Form = ({ int, label, state, setState, filterer, dataArray, selected, setS
 
     const Label = ({ text, ind }) => {
         return (
-            <div className="label mb-2">
-                <span className={`text-xl px-2    ${errors.includes(parseInt(ind)) ? "label-text text-red-500 " : selected == parseInt(ind) ? "label-text text-purple-500  " : "label-text text-black-500  "}`}>{text}</span>
+            <div className="label ">
+                <span className={`text-sm    ${errors.includes(parseInt(ind)) ? "label-text text-red-500 " : selected == parseInt(ind) ? "label-text text-purple-500  " : "label-text text-black-500  "}`}>{text}</span>
             </div>)
     }
 
