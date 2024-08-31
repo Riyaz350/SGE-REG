@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaAngleDown } from "react-icons/fa";
 
-const Form = ({ int, label, state, setState, filterer, dataArray, selected, setSelected, errors, setErrors, placeholder }) => {
+const ChangeForm = ({ int, label, state, setState, filterer, dataArray, selected, setSelected, errors, setErrors, changedCountry }) => {
 
     const [searchText, setSearchText] = useState('')
     const inputStyle = "input input-bordered  text-[#0d3454] w-full   focus:border-2 focus:outline-0 focus:border-purple-400 focus:placeholder:pl-2 transition-all duration-100"
@@ -23,7 +23,7 @@ const Form = ({ int, label, state, setState, filterer, dataArray, selected, setS
         <div className={` w-full relative    py-2`}>
             <Label ind={int} text={label} />
             <div className={`flex px-2 justify-center items-center  z-0 border-2 rounded-xl gap-5 ${`${errors?.includes(int) ? ' border-red-500 focus:border-red-500' : selected == int ? 'border-purple-500' : 'border-gray-400'} ${inputStyle}`}`}>
-                <input placeholder={placeholder && placeholder} readOnly value={state && state.counsellorName } onFocus={() => setSelected(int)} className={`  p-2 rounded-lg w-full outline-none`}
+                <input readOnly value={changedCountry? changedCountry.counsellorName: state && state.counsellorName } onFocus={() => setSelected(int)} className={`  p-2 rounded-lg w-full outline-none`}
                     onChange={(e) => {
                         setState(e.target.value)
                         setSearchText(e.target.value)
@@ -69,4 +69,4 @@ const Form = ({ int, label, state, setState, filterer, dataArray, selected, setS
     )
 }
 
-export default Form;
+export default ChangeForm;

@@ -15,7 +15,7 @@ const ThankYouModal = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
       {/* Lottie Background Animation */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-black bg-opacity-20">
         <lottie-player
           src="https://lottie.host/c34c441f-7765-442b-b4ca-83d82510529f/42UJUSiEQW.json"
           background="transparent"

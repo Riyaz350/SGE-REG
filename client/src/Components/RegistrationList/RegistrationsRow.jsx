@@ -3,7 +3,7 @@ import { CiEdit } from "react-icons/ci";
 import {Link }from 'react-router-dom'
 import { useContext } from "react";
 import { AuthContext } from "../Authentication/AuthProvider";
-const RegistrationsRow = ({registration, setRegistration}) => {
+const RegistrationsRow = ({registration}) => {
     const thStyle = "font-normal text-base"
     const {selectedRegistration, setSelectedRegistration} = useContext(AuthContext)
     const handleSearch=()=>{

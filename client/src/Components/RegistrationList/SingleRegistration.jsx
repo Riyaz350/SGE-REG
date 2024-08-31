@@ -1,37 +1,46 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useAxiosPublic from '../Hooks/useAxiosPublic';
 import Form2 from '../Registration2/Form2';
 import Form from './Form';
-import logo from '../../assets/Group.svg'
+import logo from '../../assets/Group.svg';
 import emailjs from '@emailjs/browser';
 import Swal from 'sweetalert2';
+import ChangeForm from './ChangeForm';
+import ChangedForm2 from './ChangedForm2';
+import Modal from '../Modal';
+
 
 const SingleRegistration = () => {
-    const [registration, setRegistration] = useState({})
-    const axiosPublic = useAxiosPublic()
-    const { id } = useParams()
+    const [registration, setRegistration] = useState({});
+    const [showModal, setShowModal] = useState(false); // State to manage modal visibility
+    const axiosPublic = useAxiosPublic();
+    const { id } = useParams();
     const form = useRef();
-    const forms = useRef();
 
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [mobileNo, setMobileNO] = useState('')
-    const [email, setEmail] = useState('')
-    const [academic, setAcademic] = useState('')
-    const [course, setCourse] = useState('')
-    const [university, setUniversity] = useState('')
-    const [selected, setSelected] = useState(0)
-    const [errors, setErrors] = useState([])
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [mobileNo, setMobileNO] = useState('');
+    const [email, setEmail] = useState('');
+    const [academic, setAcademic] = useState('');
+    const [course, setCourse] = useState('');
+    const [university, setUniversity] = useState('');
+    const [country, setCountry] = useState('');
+
+    const [changedFormData, setChangedFormData] = useState({});
+    const [changedCountry, setChangedCountry] = useState('');
+    const [changedCourse, setChangedCourse] = useState('');
+    const [changedUniversity, setChangedUniversity] = useState('');
+    const [selected, setSelected] = useState(0);
+    const [errors, setErrors] = useState([]);
     const [counsellor, setCounsellor] = useState({
         "counsellorMail": 'skriyazahmed200@gmail.com',
         "counsellorName": 'Riyaz'
-    })
-    const toMail = counsellor?.counsellorMail
-    const toName = counsellor?.counsellorName
-    const studentName = firstName + " " + lastName
-    const CPs = [
+    });
+    const toMail = counsellor?.counsellorMail;
+    const toName = counsellor?.counsellorName;
 
+    const CPs = [
         {
             "counsellorMail": 'nahidahmmed411@gmail.com',
             "counsellorName": 'Nahid'
@@ -40,59 +49,84 @@ const SingleRegistration = () => {
             "counsellorMail": 'skriyazahmed200@gmail.com',
             "counsellorName": 'Riyaz'
         },
+    ];
 
-    ]
-    const message = `You have meeting with  ${firstName && firstName} ${lastName && lastName}  \n 
+    const countries = [
+        {
+            "counsellorMail": 'UK',
+            "counsellorName": 'UK'
+        },
+        {
+            "counsellorMail": 'USA',
+            "counsellorName": 'USA'
+        },
+        {
+            "counsellorMail": 'Canada',
+            "counsellorName": 'Canada'
+        },
+        {
+            "counsellorMail": 'Australia',
+            "counsellorName": 'Australia'
+        },
+        {
+            "counsellorMail": 'New Zealand',
+            "counsellorName": 'New Zealand'
+        },
+        {
+            "counsellorMail": 'Germany',
+            "counsellorName": 'Germany'
+        },
+    ];
+
+    const message = `You have a meeting with ${firstName && firstName} ${lastName && lastName} \n 
                     Phone no: ${mobileNo} \n
                     Email: ${email} \n
-                    `
-    const studentMessage = `Thank you for submitting a form  ${firstName && firstName} ${lastName && lastName}. \n
-                        Our counsellor ${toName} will contact with you soon.
-                    `
-
-
-
+                    Academic qualification: ${academic} \n
+                    Interested country: ${changedCountry ? changedCountry.counsellorName : country.counsellorName} \n
+                    Interested University: ${changedUniversity ? changedUniversity : university} \n
+                    Interested course: ${changedCourse ? changedCourse : course} \n
+                    `;
 
     const sendEmail = (e) => {
         e.preventDefault();
-        const updateRegistration = { counsellorName: toName, counsellorMail: toMail }
-        axiosPublic.patch(`registrationPatchStatus/${registration?._id}`, updateRegistration)
-            .then(res => {
-                if (res.status == 200) {
-                    emailjs
-                        .sendForm(
+        if (changedCountry || changedCourse || changedUniversity) {
+            const data = { firstName: firstName, lastName: lastName, mobileNo: mobileNo, email: email, country: changedCountry ? changedCountry : country, academic: academic, course: changedCourse ? changedCourse : course, university: changedUniversity ? changedUniversity : university };
+            setChangedFormData(data);
+            const updateRegistration = { formData: data, counsellorName: toName, counsellorMail: toMail };
+            axiosPublic.patch(`registrationPatchStatus/${registration?._id}`, updateRegistration)
+                .then(res => {
+                    if (res.status === 200) {
+                        emailjs.sendForm(
                             'service_2xxhd3m',
                             'template_mt9dggc', form.current, {
-                            publicKey: 'QnQYR25vUAQhCK0Rn',
-                        })
-                        .then(
-                            () => {
+                                publicKey: 'QnQYR25vUAQhCK0Rn',
+                            })
+                            .then(() => {
+                                setShowModal(true); // Show the modal
+                            });
+                    }
+                });
+        } else {
+            const updateRegistration = { formData: registration?.formData, counsellorName: toName, counsellorMail: toMail };
+            axiosPublic.patch(`registrationPatchStatus/${registration?._id}`, updateRegistration)
+                .then(res => {
+                    if (res.status === 200) {
+                        emailjs.sendForm(
+                            'service_2xxhd3m',
+                            'template_mt9dggc', form.current, {
+                                publicKey: 'QnQYR25vUAQhCK0Rn',
+                            })
+                            .then(() => {
+                                setShowModal(true); // Show the modal
+                            });
+                    }
+                });
+        }
+    };
 
-                                Swal.fire({ position: "top-end", icon: "success", title: `An email has been sent to ${toName}`, showConfirmButton: false, timer: 1500 });
-                                sendEmails()
-                            },
-                            (error) => {
-                                console.log('FAILED...', error.text);
-                            },
-                        );
-                }
-            })
-
-    }
-
-    const sendEmails = () => {
-        emailjs.sendForm(
-            'service_2xxhd3m',
-            'template_mt9dggc', forms.current, {
-            publicKey: 'QnQYR25vUAQhCK0Rn',
-        })
-        .then(()=>{
-            console.log('success')
-        })
-    }
     useEffect(() => {
         axiosPublic.get('/registrations')
-            .then(res => setRegistration(res.data.find(reg => reg._id == id)))
+            .then(res => setRegistration(res.data.find(reg => reg._id === id)));
         if (Object.keys(registration).length > 0) {
             setFirstName(registration.formData.firstName);
             setLastName(registration.formData.lastName);
@@ -101,8 +135,9 @@ const SingleRegistration = () => {
             setAcademic(registration.formData.academic);
             setCourse(registration.formData.course);
             setUniversity(registration.formData.university);
+            setCountry(registration.formData.country);
         }
-    }, [axiosPublic, id, registration, firstName])
+    }, [axiosPublic, id, registration]);
 
     return (
         <div className='max-w-5xl mx-auto'>
@@ -127,50 +162,32 @@ const SingleRegistration = () => {
                                 <Form2 int={3} label='Mobile No:' state={mobileNo} setState={setMobileNO} placeholder='+8801---------' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} value={mobileNo} />
                                 <Form2 int={4} label='Email' state={email} setState={setEmail} placeholder='Email' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'email'} value={email} />
                                 <Form2 int={5} label='Academic Qualification' state={academic} setState={setAcademic} placeholder='Intermediate' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} value={academic} />
-                                <Form2 int={6} label={`In which course you're interested?`} state={course} setState={setCourse} placeholder='CSE/English/Literature' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} value={course} />
-                                <Form2 int={7} label={'Interested University'} state={university} setState={setUniversity} placeholder='Oxford/Angela Ruskin' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} value={university} />
-                                <Form int={2} label='Select a counsellor' state={counsellor} setState={setCounsellor} dataArray={CPs} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
+                                <ChangeForm int={6} label='Select a country' state={country} setState={setChangedCountry} dataArray={countries} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'} changedCountry={changedCountry} />
+                                <ChangedForm2 int={7} label={`In which course you're interested?`} state={course} setState={setChangedCourse} placeholder='CSE/English/Literature' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} value={course} changedValue={changedCourse} />
+                                <ChangedForm2 int={8} label={'Interested University'} state={university} setState={setChangedUniversity} placeholder='Oxford/Angela Ruskin' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} value={university} changedValue={changedUniversity} />
+                                <Form int={9} label='Select a counsellor' state={counsellor} setState={setCounsellor} dataArray={CPs} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
                             </div>
                             <form ref={form} onSubmit={sendEmail} action="">
-                                <div className="  gap-2 hidden">
+                                <div className="gap-2 hidden">
                                     <label>Emails</label>
                                     <input value={toName} type="text" name="to_name" />
                                 </div>
-                                <div className="  gap-2 hidden">
+                                <div className="gap-2 hidden">
                                     <label>Emails</label>
                                     <input value={toMail} type="email" name="to_mail" />
                                 </div>
-                                <div className=" gap-2 hidden">
+                                <div className="gap-2 hidden">
                                     <textarea className='hidden' value={`${message} \n Please be on time`} name="message" />
                                 </div>
-                                <button type="submit" value="Send" className="btn w-full  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
-
-                            </form>
-
-                            <form ref={forms} onSubmit={sendEmails}>
-                                <div className="ss  gap-2 hidden">
-                                    <label>Emails</label>
-                                    <input value={studentName} type="text" name="to_name" />
-                                </div>
-                                <div className="  gap-2 hidden">
-                                    <label>Emails</label>
-                                    <input value={email} type="email" name="to_mail" />
-                                </div>
-                                <div className=" gap-2 hidden">
-                                    <textarea className='hidden' value={`${studentMessage}`} name="message" />
-                                </div>
-                                <button type="submit" value="Send" className="btn w-full hidden  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
-
+                                <button type="submit" value="Send" className="btn w-full lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10 font-bold">Submit</button>
                             </form>
                         </div>
-
                     </div>
                 </div>
                 :
                 <span className="loading loading-dots loading-lg"></span>
-
-
             }
+            <Modal showModal={showModal} closeModal={() => setShowModal(false)} message={`The application has been assigned to our counselor ${toName} by email.`} />
         </div>
     );
 };
