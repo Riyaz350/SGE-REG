@@ -106,7 +106,7 @@ const MainForm = () => {
 
     }
   }
- 
+
 
   useEffect(() => {
     const data = { firstName: firstName, lastName: lastName, mobileNo: mobileNo, email: email, country: country, academic: academic, course: course, university: university }
@@ -126,7 +126,7 @@ const MainForm = () => {
           </div>
         </div>
         <div className='h-full my-auto'>
-          <form ref={forms}  onSubmit={sendEmail} className="grid  gap-5 ">
+          <form ref={forms} onSubmit={sendEmail} className="grid  gap-5 ">
             <div className='flex gap-5'>
               <Form2 int={1} label='Student First Name' state={firstName} setState={setFirstName} placeholder='John' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'} />
               <Form2 int={2} label='Student Last Name' state={lastName} setState={setLastName} placeholder='Doe' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'} />
@@ -144,23 +144,23 @@ const MainForm = () => {
                 <textarea className='hidden' value={`${studentMessage} \n Please be on time`} name="message" />
               </div>
               <div className="ss  gap-2 hidden">
-            <label>Emails</label>
-            <input value={studentName} type="text" name="to_name" />
-          </div>
-          <div className="  gap-2 hidden">
-            <label>Emails</label>
-            <input value={email} type="email" name="to_mail" />
-          </div>
-          <div className=" gap-2 hidden">
-            <textarea className='hidden' value={`${studentMessage}`} name="message" />
-          </div>
+                <label>Emails</label>
+                <input value={studentName} type="text" name="to_name" />
+              </div>
+              <div className="  gap-2 hidden">
+                <label>Emails</label>
+                <input value={email} type="email" name="to_mail" />
+              </div>
+              <div className=" gap-2 hidden">
+                <textarea className='hidden' value={`${studentMessage}`} name="message" />
+              </div>
               <button type="submit" value="Send" className="btn w-full  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
             </div>
           </form>
         </div>
 
         <form >
-          
+
           <button type="submit" value="Send" className="btn w-full hidden  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
 
         </form>
