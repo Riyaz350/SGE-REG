@@ -4,7 +4,6 @@ import {Link }from 'react-router-dom'
 import { useContext } from "react";
 import { AuthContext } from "../Authentication/AuthProvider";
 const RegistrationsRow = ({registration, setRegistration}) => {
-    console.log(registration)
     const thStyle = "font-normal text-base"
     const {selectedRegistration, setSelectedRegistration} = useContext(AuthContext)
     const handleSearch=()=>{

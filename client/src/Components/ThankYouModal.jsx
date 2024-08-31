@@ -39,7 +39,7 @@ const ThankYouModal = ({ isOpen, onClose }) => {
           ></lottie-player>
         </div>
 
-        <p className="text-gray-800 lg:text-xl md:text-xl text-lg text-center my-6 leading-relaxed">
+        <p className="text-gray-800 lg:text-xl md:text-xl text-lggi text-center my-6 leading-relaxed">
           Thank you for taking the first step with us!
           <br />
           Our dedicated counselor will reach out to you shortly.

@@ -12,6 +12,7 @@ const SingleRegistration = () => {
     const axiosPublic = useAxiosPublic()
     const { id } = useParams()
     const form = useRef();
+    const forms = useRef();
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -28,6 +29,7 @@ const SingleRegistration = () => {
     })
     const toMail = counsellor?.counsellorMail
     const toName = counsellor?.counsellorName
+    const studentName = firstName + " " + lastName
     const CPs = [
 
         {
@@ -40,34 +42,53 @@ const SingleRegistration = () => {
         },
 
     ]
-    const message = `You have meeting with  ${firstName && firstName} ${lastName && lastName}`
+    const message = `You have meeting with  ${firstName && firstName} ${lastName && lastName}  \n 
+                    Phone no: ${mobileNo} \n
+                    Email: ${email} \n
+                    `
+    const studentMessage = `Thank you for submitting a form  ${firstName && firstName} ${lastName && lastName}. \n
+                        Our counsellor ${toName} will contact with you soon.
+                    `
 
 
 
 
     const sendEmail = (e) => {
         e.preventDefault();
-        const updateRegistration = {counsellorName:toName, counsellorMail:toMail}
+        const updateRegistration = { counsellorName: toName, counsellorMail: toMail }
         axiosPublic.patch(`registrationPatchStatus/${registration?._id}`, updateRegistration)
-        .then(res =>{if(res.status== 200){
-            emailjs
-            .sendForm(
-                'service_2xxhd3m',
-                'template_mt9dggc', form.current, {
-                publicKey: 'QnQYR25vUAQhCK0Rn',
+            .then(res => {
+                if (res.status == 200) {
+                    emailjs
+                        .sendForm(
+                            'service_2xxhd3m',
+                            'template_mt9dggc', form.current, {
+                            publicKey: 'QnQYR25vUAQhCK0Rn',
+                        })
+                        .then(
+                            () => {
+
+                                Swal.fire({ position: "top-end", icon: "success", title: `An email has been sent to ${toName}`, showConfirmButton: false, timer: 1500 });
+                                sendEmails()
+                            },
+                            (error) => {
+                                console.log('FAILED...', error.text);
+                            },
+                        );
+                }
             })
-            .then(
-                () => {
-                    Swal.fire({ position: "top-end", icon: "success", title:`An email has been sent to ${toName}`, showConfirmButton: false, timer: 1500 });
 
-                },
-                (error) => {
-                    console.log('FAILED...', error.text);
-                },
-            );}
+    }
+
+    const sendEmails = () => {
+        emailjs.sendForm(
+            'service_2xxhd3m',
+            'template_mt9dggc', forms.current, {
+            publicKey: 'QnQYR25vUAQhCK0Rn',
         })
-       
-
+        .then(()=>{
+            console.log('success')
+        })
     }
     useEffect(() => {
         axiosPublic.get('/registrations')
@@ -123,6 +144,22 @@ const SingleRegistration = () => {
                                     <textarea className='hidden' value={`${message} \n Please be on time`} name="message" />
                                 </div>
                                 <button type="submit" value="Send" className="btn w-full  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
+
+                            </form>
+
+                            <form ref={forms} onSubmit={sendEmails}>
+                                <div className="ss  gap-2 hidden">
+                                    <label>Emails</label>
+                                    <input value={studentName} type="text" name="to_name" />
+                                </div>
+                                <div className="  gap-2 hidden">
+                                    <label>Emails</label>
+                                    <input value={email} type="email" name="to_mail" />
+                                </div>
+                                <div className=" gap-2 hidden">
+                                    <textarea className='hidden' value={`${studentMessage}`} name="message" />
+                                </div>
+                                <button type="submit" value="Send" className="btn w-full hidden  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
 
                             </form>
                         </div>
