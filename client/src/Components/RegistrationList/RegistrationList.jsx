@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import RegistrationsRow from "./RegistrationsRow";
 import useRegistrations from "../Hooks/useRegistrations";
