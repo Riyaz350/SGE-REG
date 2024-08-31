@@ -11,6 +11,7 @@ import AuthProvider from './Components/Authentication/AuthProvider.jsx';
 import RegistrationList from './Components/RegistrationList/RegistrationList.jsx';
 import SingleRegistration from './Components/RegistrationList/SingleRegistration.jsx';
 import LandingPage from './Components/Home/LandingPage.jsx';
+import PrivateRoute from './Components/Hooks/PrivateRoutes.jsx';
 
 const router = createBrowserRouter([
   {
@@ -33,11 +34,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'registrations',
-        element: <RegistrationList/>
+        element: <PrivateRoute><RegistrationList/></PrivateRoute>
       },
       {
         path:'/singleRegistration/:id',
-        element:<SingleRegistration/>
+        element:<PrivateRoute><SingleRegistration/></PrivateRoute>
       }
 
     ]
