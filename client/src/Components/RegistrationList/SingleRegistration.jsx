@@ -79,7 +79,12 @@ const SingleRegistration = () => {
     ]
     const message = `You have meeting with  ${firstName && firstName} ${lastName && lastName}  \n 
                     Phone no: ${mobileNo} \n
-                    Email: ${email} \n`
+                    Email: ${email} \n
+                    Academic qualification: ${academic} \n
+                    Interested country: ${changedCountry? changedCountry.counsellorName: country.counsellorName} \n
+                    Interested University: ${changedUniversity? changedUniversity: university} \n
+                    Interested course: ${changedCourse? changedCourse: course} \n
+                    `
 
 
     const sendEmail = (e) => {
@@ -91,23 +96,23 @@ const SingleRegistration = () => {
             axiosPublic.patch(`registrationPatchStatus/${registration?._id}`, updateRegistration)
                 .then(res => {
                     console.log(res.status)
-                    // if (res.status == 200) {
-                    //     emailjs
-                    //         .sendForm(
-                    //             'service_2xxhd3m',
-                    //             'template_mt9dggc', form.current, {
-                    //             publicKey: 'QnQYR25vUAQhCK0Rn',
-                    //         })
-                    //         .then(
-                    //             () => {
+                    if (res.status == 200) {
+                        emailjs
+                            .sendForm(
+                                'service_2xxhd3m',
+                                'template_mt9dggc', form.current, {
+                                publicKey: 'QnQYR25vUAQhCK0Rn',
+                            })
+                            .then(
+                                () => {
 
-                    //                 Swal.fire({ position: "top-end", icon: "success", title: `An email has been sent to ${toName}`, showConfirmButton: false, timer: 1500 });
-                    //             },
-                    //             (error) => {
-                    //                 console.log('FAILED...', error.text);
-                    //             },
-                    //         );
-                    // }
+                                    Swal.fire({ position: "top-end", icon: "success", title: `An email has been sent to ${toName}`, showConfirmButton: false, timer: 1500 });
+                                },
+                                (error) => {
+                                    console.log('FAILED...', error.text);
+                                },
+                            );
+                    }
                 })
 
         } else {
@@ -115,23 +120,23 @@ const SingleRegistration = () => {
             axiosPublic.patch(`registrationPatchStatus/${registration?._id}`, updateRegistration)
                 .then(res => {
                     console.log(res.status)
-                    // if (res.status == 200) {
-                    //     emailjs
-                    //         .sendForm(
-                    //             'service_2xxhd3m',
-                    //             'template_mt9dggc', form.current, {
-                    //             publicKey: 'QnQYR25vUAQhCK0Rn',
-                    //         })
-                    //         .then(
-                    //             () => {
+                    if (res.status == 200) {
+                        emailjs
+                            .sendForm(
+                                'service_2xxhd3m',
+                                'template_mt9dggc', form.current, {
+                                publicKey: 'QnQYR25vUAQhCK0Rn',
+                            })
+                            .then(
+                                () => {
 
-                    //                 Swal.fire({ position: "top-end", icon: "success", title: `An email has been sent to ${toName}`, showConfirmButton: false, timer: 1500 });
-                    //             },
-                    //             (error) => {
-                    //                 console.log('FAILED...', error.text);
-                    //             },
-                    //         );
-                    // }
+                                    Swal.fire({ position: "top-end", icon: "success", title: `An email has been sent to ${toName}`, showConfirmButton: false, timer: 1500 });
+                                },
+                                (error) => {
+                                    console.log('FAILED...', error.text);
+                                },
+                            );
+                    }
                 })
 
         }

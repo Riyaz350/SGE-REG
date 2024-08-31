@@ -1,17 +1,33 @@
 import { useEffect, useState } from "react";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import RegistrationsRow from "./RegistrationsRow";
+import useRegistrations from "../Hooks/useRegistrations";
 
 const RegistrationList = () => {
-    const [registrations, setRegistrations] = useState([])
-    const [selectedRegistration, setSelectedRegistration] = useState([])
+    const [registrations, refetch] = useRegistrations()
     const regArray = [...registrations].reverse()
-    console.log(regArray)
-    const axiosPublic = useAxiosPublic()
+    
+
+    // setTimeout(() => {
+    //     refetch()
+    // }, 1000);
     useEffect(() => {
-        axiosPublic.get('/registrations')
-            .then(res => setRegistrations(res.data))
-    }, [axiosPublic])
+        const intervalId = setInterval(() => {
+            refetch();
+        }, 1000);
+
+        // Cleanup interval on component unmount
+        return () => clearInterval(intervalId);
+    }, [refetch]);
+    
+    // const [registrations, setRegistrations] = useState([])
+    // const axiosPublic = useAxiosPublic()
+    // useEffect(() => {
+    //     axiosPublic.get('/registrations')
+    //         .then(res => setRegistrations(res.data))
+    
+    // }, [])
+
     return (
         <div>
             {registrations ? <div className=" overflow-scroll no-scrollbar bg-white max-w-5xl mx-auto shadow-lg  min-h-screen">
@@ -32,7 +48,7 @@ const RegistrationList = () => {
                         {regArray ?
                             <tbody className="">
                                 {
-                                    regArray.map(registration => <RegistrationsRow key={registration._id} registration={registration} setApplication={setSelectedRegistration}></RegistrationsRow>)
+                                    regArray.map(registration => <RegistrationsRow key={registration._id} registration={registration} ></RegistrationsRow>)
                                 }
                             </tbody> :
                             <span className="loading loading-spinner loading-lg"></span>

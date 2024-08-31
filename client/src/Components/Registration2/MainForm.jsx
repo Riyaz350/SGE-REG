@@ -6,6 +6,7 @@ import { extractDateTime } from '../Tools/Time';
 import Swal from 'sweetalert2';
 import Form from '../RegistrationList/Form';
 import emailjs from '@emailjs/browser';
+import useRegistrations from '../Hooks/useRegistrations';
 
 const MainForm = () => {
   const [firstName, setFirstName] = useState('')
@@ -22,7 +23,7 @@ const MainForm = () => {
   const axiosPublic = useAxiosPublic()
   const time = extractDateTime()
   const placeholderText = 'Select a country'
-  const message = `You have meeting with  ${firstName && firstName} ${lastName && lastName}`
+  const [registrations, refetch] = useRegistrations()
 
   const forms = useRef();
   const studentName = firstName + " " + lastName
@@ -85,7 +86,15 @@ const MainForm = () => {
       axiosPublic.post('/registrations', { formData: firstFormData, cpName: '', cpMail: '', time: time })
         .then(res => {
           if (res.status == 200) {
-            sendEmails()
+            refetch()
+            emailjs.sendForm(
+              'service_2xxhd3m',
+              'template_mt9dggc', forms.current, {
+              publicKey: 'QnQYR25vUAQhCK0Rn',
+            })
+              .then(() => {
+                console.log('success')
+              })
             Swal.fire({ position: "top-end", icon: "success", title: "Your form has been submitted", showConfirmButton: false, timer: 1500 });
 
             setTimeout(() => {
@@ -97,16 +106,7 @@ const MainForm = () => {
 
     }
   }
-  const sendEmails = () => {
-    emailjs.sendForm(
-      'service_2xxhd3m',
-      'template_mt9dggc', forms.current, {
-      publicKey: 'QnQYR25vUAQhCK0Rn',
-    })
-      .then(() => {
-        console.log('success')
-      })
-  }
+ 
 
   useEffect(() => {
     const data = { firstName: firstName, lastName: lastName, mobileNo: mobileNo, email: email, country: country, academic: academic, course: course, university: university }
@@ -126,7 +126,7 @@ const MainForm = () => {
           </div>
         </div>
         <div className='h-full my-auto'>
-          <form onSubmit={sendEmail} className="grid  gap-5 ">
+          <form ref={forms}  onSubmit={sendEmail} className="grid  gap-5 ">
             <div className='flex gap-5'>
               <Form2 int={1} label='Student First Name' state={firstName} setState={setFirstName} placeholder='John' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'} />
               <Form2 int={2} label='Student Last Name' state={lastName} setState={setLastName} placeholder='Doe' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'} />
@@ -141,15 +141,9 @@ const MainForm = () => {
             <Form2 int={8} label={'Interested University'} state={university} setState={setUniversity} placeholder='Oxford/Angela Ruskin' selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} type={'text'} />
             <div action="">
               <div className="flex gap-2">
-                <textarea className='hidden' value={`${message} \n Please be on time`} name="message" />
+                <textarea className='hidden' value={`${studentMessage} \n Please be on time`} name="message" />
               </div>
-              <button type="submit" value="Send" className="btn w-full  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
-            </div>
-          </form>
-        </div>
-
-        <form ref={forms} onSubmit={sendEmails}>
-          <div className="ss  gap-2 hidden">
+              <div className="ss  gap-2 hidden">
             <label>Emails</label>
             <input value={studentName} type="text" name="to_name" />
           </div>
@@ -160,6 +154,13 @@ const MainForm = () => {
           <div className=" gap-2 hidden">
             <textarea className='hidden' value={`${studentMessage}`} name="message" />
           </div>
+              <button type="submit" value="Send" className="btn w-full  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
+            </div>
+          </form>
+        </div>
+
+        <form >
+          
           <button type="submit" value="Send" className="btn w-full hidden  lg:ml-auto btn-primary text-base lg:text-lg text-white bg-blue-500 rounded-xl p-2 my-10  font-bold  ">Submit</button>
 
         </form>
