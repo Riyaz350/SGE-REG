@@ -11,6 +11,8 @@ import AuthProvider from './Components/Authentication/AuthProvider.jsx';
 import RegistrationList from './Components/RegistrationList/RegistrationList.jsx';
 import SingleRegistration from './Components/RegistrationList/SingleRegistration.jsx';
 import LandingPage from './Components/Home/LandingPage.jsx';
+import PrivateRoute from './Components/Hooks/PrivateRoutes.jsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const router = createBrowserRouter([
   {
@@ -18,8 +20,8 @@ const router = createBrowserRouter([
     element: <Home />,
     children: [
       {
-        path:'/',
-        element:<LandingPage/>
+        path: '/',
+        element: <LandingPage />
       },
       {
         path: '/studentForm',
@@ -33,21 +35,25 @@ const router = createBrowserRouter([
       },
       {
         path: 'registrations',
-        element: <RegistrationList/>
+        element: <PrivateRoute><RegistrationList /></PrivateRoute>
       },
       {
-        path:'/singleRegistration/:id',
-        element:<SingleRegistration/>
+        path: '/singleRegistration/:id',
+        element: <PrivateRoute><SingleRegistration /></PrivateRoute>
       }
 
     ]
   },
 ]);
+const queryClient = new QueryClient();
+
 
 createRoot(document.getElementById('root')).render(
-  <AuthProvider>
-    <StrictMode>
-      <RouterProvider router={router} />
-    </StrictMode>,
-  </AuthProvider>
+  <StrictMode>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </AuthProvider>
+  </StrictMode>,
 )

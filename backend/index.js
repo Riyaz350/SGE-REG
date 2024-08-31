@@ -56,6 +56,7 @@ const dbConnect = async () => {
             const query = { _id: new ObjectId(id) }
             const updateDoc = {
               $set: {
+                formData:req.body.formData,
                 cpMail: req.body.counsellorMail,
                 cpName: req.body.counsellorName
               }
