@@ -28,8 +28,8 @@ const Registration = () => {
                     <input className={inputClass} type="text" name="user_name" />
                 </div>
                 <div className="flex gap-2">
-                    <label>Email</label>
-                    <input className={inputClass} type="email" name="user_email" />
+                    <label>Emails</label>
+                    <input className={inputClass} type="email" name="to_mail" />
                 </div>
                 <div className="flex gap-2">
                     <label>Message</label>

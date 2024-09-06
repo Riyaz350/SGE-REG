@@ -3,16 +3,57 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 import Registration from './Components/Registration/Registration.jsx';
+import Registration2 from './Components/Registration2/Registration2.jsx';
+import RegistrationDummy from './Components/Registration/RegistrationDummy.jsx';
+import Home from './Components/Home/Home.jsx';
+import LogIn from './Components/Authentication/LogIn.jsx';
+import AuthProvider from './Components/Authentication/AuthProvider.jsx';
+import RegistrationList from './Components/RegistrationList/RegistrationList.jsx';
+import SingleRegistration from './Components/RegistrationList/SingleRegistration.jsx';
+import LandingPage from './Components/Home/LandingPage.jsx';
+import PrivateRoute from './Components/Hooks/PrivateRoutes.jsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Registration/>
+    element: <Home />,
+    children: [
+      {
+        path: '/',
+        element: <LandingPage />
+      },
+      {
+        path: '/studentForm',
+        // element: <Registration/>
+        // element:<RegistrationDummy/>
+        element: <Registration2 />,
+      },
+      {
+        path: 'logIn',
+        element: <LogIn />
+      },
+      {
+        path: 'registrations',
+        element: <PrivateRoute><RegistrationList /></PrivateRoute>
+      },
+      {
+        path: '/singleRegistration/:id',
+        element: <PrivateRoute><SingleRegistration /></PrivateRoute>
+      }
+
+    ]
   },
 ]);
+const queryClient = new QueryClient();
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </AuthProvider>
   </StrictMode>,
 )
