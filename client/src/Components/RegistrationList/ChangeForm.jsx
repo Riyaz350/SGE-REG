@@ -23,10 +23,10 @@ const ChangeForm = ({ int, label, state, setState, filterer, dataArray, selected
         <div className={` w-full relative    py-2`}>
             <Label ind={int} text={label} />
             <div className={`flex px-2 justify-center items-center  z-0 border-2 rounded-xl gap-5 ${`${errors?.includes(int) ? ' border-red-500 focus:border-red-500' : selected == int ? 'border-purple-500' : 'border-gray-400'} ${inputStyle}`}`}>
-                <input readOnly value={changedCountry? changedCountry.counsellorName: state && state.counsellorName } onFocus={() => setSelected(int)} className={`  p-2 rounded-lg w-full outline-none`}
+                <input readOnly value={changedCountry? changedCountry: state && state  } onFocus={() => setSelected(int)} className={`  p-2 rounded-lg w-full outline-none`}
                     onChange={(e) => {
-                        setState(e.target.value)
-                        setSearchText(e.target.value)
+                        setState(e.target.value.counsellorName)
+                        setSearchText(e.target.value.counsellorName)
                         setErrors((prevItems) => prevItems.filter(item => item !== int))
                     }} type="text" />
                 <p onClick={() => setSelected(int)} className="z-0  cursor-pointer justify-end flex"><FaAngleDown /></p>
@@ -56,7 +56,7 @@ const ChangeForm = ({ int, label, state, setState, filterer, dataArray, selected
                         {selected === int &&
                             dataArray.map((country) =>
                                 <option onClick={() => {
-                                    setState(country)
+                                    setState(country.counsellorName)
                                     setSelected(0)
                                     setErrors((prevItems) => prevItems.filter(item => item !== int))
                                 }} className="hover:bg-gray-300 rounded-lg p-1 px-2 cursor-pointer" key={country?.counsellorMail}  > {country?.counsellorName} </option>

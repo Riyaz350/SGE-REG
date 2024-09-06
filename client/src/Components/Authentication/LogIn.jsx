@@ -56,13 +56,13 @@ const LogIn = () => {
     }
 
     return (
-        <div className=" bg-[#f8f7fa] grid grid-cols-3 items-center" >
+        <div className=" bg-[#f8f7fa]  lg:grid grid-cols-3 items-center" >
             <div className=" p-20 col-span-2 hidden lg:flex">
                 <img src={logInCover} alt="" />
             </div>
 
-            <div className="    bg-white col-span-1">
-                <div className={"text-black w-3/4 light-home flex flex-col items-start justify-center rounded-3xl mx-auto min-h-screen my-auto py-10   "}>
+            <div className="  px-10 lg:px-0  bg-white col-span-1">
+                <div className={"text-black lg:w-3/4 light-home flex flex-col items-start justify-center rounded-3xl mx-auto min-h-screen my-auto py-10   "}>
                     <div className=" ">
                         <h1 className="text-3xl mb-2 lg:text-2xl   ">Welcome to Shabuj Global! 👋🏻 </h1>
                     </div>

@@ -4,7 +4,6 @@ import useAxiosPublic from '../Hooks/useAxiosPublic';
 import Form2 from '../Registration2/Form2';
 import Form from './Form';
 import logo from '../../assets/Group.svg';
-import emailjs from '@emailjs/browser';
 import Swal from 'sweetalert2';
 import ChangeForm from './ChangeForm';
 import ChangedForm2 from './ChangedForm2';
@@ -48,6 +47,10 @@ const SingleRegistration = () => {
         {
             "counsellorMail": 'skriyazahmed200@gmail.com',
             "counsellorName": 'Riyaz'
+        },
+        {
+            "counsellorMail": 'nayeem@shabujglobal.in',
+            "counsellorName": 'Nayeem Uddin'
         },
     ];
 
@@ -95,15 +98,27 @@ const SingleRegistration = () => {
             const updateRegistration = { formData: data, counsellorName: toName, counsellorMail: toMail };
             axiosPublic.patch(`registrationPatchStatus/${registration?._id}`, updateRegistration)
                 .then(res => {
-                    if (res.status === 200) {
-                        emailjs.sendForm(
-                            'service_2xxhd3m',
-                            'template_mt9dggc', form.current, {
-                                publicKey: 'QnQYR25vUAQhCK0Rn',
-                            })
-                            .then(() => {
-                                setShowModal(true); // Show the modal
-                            });
+                    if (res.status === 200 && firstName && lastName && toName && toMail && mobileNo && email && academic && changedCountry || country && changedUniversity || university && changedUniversity || course) {
+                        Swal.fire({ position: "top-end", icon: "success", title: "An email has been sent to the counsellor", showConfirmButton: false, timer: 1500 });
+                        const mailBody = {
+                            name: toName, to: toMail, mail: data,
+                            subject: 'You have a new meeting with a student.'
+                        }
+                        axiosPublic.post('/sendMails', mailBody)
+                            .then(res => {
+                                if(res.status == 200){
+                                    Swal.fire({ position: "top-end", icon: "success", title: "Welcome to Shabuj Global", showConfirmButton: false, timer: 1500 });
+                            }}
+                        )
+
+                        // emailjs.sendForm(
+                        //     'service_zr7yj3k',
+                        //     'template_7lxly9a', form.current, {
+                        //         publicKey: 'xt0U9Dqc3b-jQFCLo',
+                        //     })
+                        //     .then(() => {
+                        //         setShowModal(true); // Show the modal
+                        //     });
                     }
                 });
         } else {
@@ -111,14 +126,15 @@ const SingleRegistration = () => {
             axiosPublic.patch(`registrationPatchStatus/${registration?._id}`, updateRegistration)
                 .then(res => {
                     if (res.status === 200) {
-                        emailjs.sendForm(
-                            'service_2xxhd3m',
-                            'template_mt9dggc', form.current, {
-                                publicKey: 'QnQYR25vUAQhCK0Rn',
-                            })
-                            .then(() => {
-                                setShowModal(true); // Show the modal
-                            });
+                        Swal.fire({ position: "top-end", icon: "success", title: "An email has been sent to the counsellor", showConfirmButton: false, timer: 1500 });
+
+                        const data = { firstName: firstName, lastName: lastName, mobileNo: mobileNo, email: email, country: changedCountry ? changedCountry : country, academic: academic, course: changedCourse ? changedCourse : course, university: changedUniversity ? changedUniversity : university };
+                        const mailBody = {
+                            name: toName, to: toMail, mail: data,
+                            subject: 'You have a new meeting with a student.'
+                        }
+                        axiosPublic.post('/sendMails', mailBody)
+                        
                     }
                 });
         }

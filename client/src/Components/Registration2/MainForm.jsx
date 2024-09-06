@@ -25,7 +25,6 @@ const MainForm = () => {
   const axiosPublic = useAxiosPublic();
   const time = extractDateTime();
   const placeholderText = 'Select a country';
-  const [registrations, refetch] = useRegistrations();
 
   const forms = useRef();
   const studentName = firstName + " " + lastName;
@@ -55,27 +54,23 @@ const MainForm = () => {
     if (!course) addError(7);
     if (!university) addError(8);
 
-    if (errors.length === 0 && firstName && lastName) {
+    if (errors.length === 0 && firstName && lastName && email) {
       axiosPublic.post('/registrations', { formData: firstFormData, cpName: '', cpMail: '', time: time })
         .then(res => {
           if (res.status === 200) {
-            refetch();
-            emailjs.sendForm(
-              'service_2xxhd3m',
-              'template_mt9dggc',
-              forms.current, {
-              publicKey: 'QnQYR25vUAQhCK0Rn',
-            }).then(() => console.log('success'));
+            const mailBody = {name: firstName + " " +lastName, to: email, mail :`Thank you for submitting a form \n Our counsellor will contact you soon. ` , subject:'Thank you for submitting a form.' }
+            axiosPublic.post('/sendMail', mailBody)
+            .then(res=> console.log(res.status))
 
-            // Swal.fire({
-            //   position: "top-end",
-            //   icon: "success",
-            //   title: "Your form has been submitted",
-            //   showConfirmButton: false,
-            //   timer: 1500
-            // });
+            // emailjs.sendForm(
+            //   'service_zr7yj3k',
+            //   'template_7lxly9a',
+            //   forms.current, {
+            //   publicKey: 'xt0U9Dqc3b-jQFCLo',
+            // }).then(() => console.log('success'));
 
-            setIsModalOpen(true);  // Show the modal upon successful form submission
+
+            setIsModalOpen(true);  
 
             setTimeout(() => {
               location.reload();
@@ -86,7 +81,7 @@ const MainForm = () => {
   };
 
   useEffect(() => {
-    const data = { firstName, lastName, mobileNo, email, country, academic, course, university };
+    const data = { firstName, lastName, mobileNo, email, country: country.counsellorName, academic, course, university };
     setFirstFormData(data);
   }, [firstName, lastName, mobileNo, email, country, academic, course, university]);
 
