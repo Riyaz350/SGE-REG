@@ -45,6 +45,20 @@ const dbConnect = async () => {
             const result = await registrations.find().toArray()
             res.send(result)
         })
+        app.get("/registration/:id", async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: new ObjectId(id) }
+            const studentData = registrations.find(filter)
+            const result = await studentData.toArray()
+            res.send(result)
+        })
+
+        app.get('/counsellors/:email',  async (req, res) => {
+            const query = { cpMail: req.params?.email }
+            const result = await registrations.find(query).toArray()
+            res.send(result)
+
+        })
 
         app.post(`/registrations`, async (req, res) => {
             const registration = req.body
@@ -118,7 +132,7 @@ const dbConnect = async () => {
             const mail = req?.body?.mail
             const firstName = mail.firstName
             const lastName = mail.lastName
-            const mobileNo = mail.mobileNo 
+            const mobileNo = mail.mobileNo
             const email = mail.email
             const academic = mail.academic
             const country = mail.country
@@ -142,7 +156,7 @@ const dbConnect = async () => {
                 from: 'shabujglobaleducation24@gmail.com',
                 to: to,
                 subject: subject,
-                html:`
+                html: `
                 <div>
                     <div style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow: hidden;">
                         <div style="background-color: #0073e6; color: #ffffff; padding: 20px; text-align: center;">
@@ -150,7 +164,7 @@ const dbConnect = async () => {
                         </div>
                         <div style="padding: 20px;">
                             <p style="font-size: 16px; color: #333333;">Hello, ${name}</p>
-                            <p style="font-size: 16px; color: #333333;">You have a meeting with ${firstName + " "+ lastName}</p>
+                            <p style="font-size: 16px; color: #333333;">You have a meeting with ${firstName + " " + lastName}</p>
                             <p style="font-size: 16px; color: #333333;">Phone no: ${mobileNo}</p>
                             <p style="font-size: 16px; color: #333333;">Email: ${email}</p>
                             <p style="font-size: 16px; color: #333333;">Academic qualification: ${academic}</p>
@@ -166,7 +180,7 @@ const dbConnect = async () => {
                         </div>
                     </div>
                 </div>`
-                            
+
             };
 
             transporter.sendMail(mailOptions, function (error, info) {

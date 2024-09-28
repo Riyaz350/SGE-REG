@@ -33,24 +33,72 @@ const SingleRegistration = () => {
     const [selected, setSelected] = useState(0);
     const [errors, setErrors] = useState([]);
     const [counsellor, setCounsellor] = useState({
-        "counsellorMail": 'skriyazahmed200@gmail.com',
-        "counsellorName": 'Riyaz'
+        "counsellorMail": 'raen@shabujglobal.org',
+        "counsellorName": 'Rajen Kumar Deb'
     });
     const toMail = counsellor?.counsellorMail;
     const toName = counsellor?.counsellorName;
 
     const CPs = [
         {
-            "counsellorMail": 'nahidahmmed411@gmail.com',
-            "counsellorName": 'Nahid'
+            "counsellorMail": 'raen@shabujglobal.org',
+            "counsellorName": 'Rajen Kumar Deb'
         },
         {
-            "counsellorMail": 'skriyazahmed200@gmail.com',
-            "counsellorName": 'Riyaz'
+            "counsellorMail": 'applications.bd@shabujglobal.com',
+            "counsellorName": 'Touhidur Rahman'
         },
         {
-            "counsellorMail": 'nayeem@shabujglobal.in',
-            "counsellorName": 'Nayeem Uddin'
+            "counsellorMail": 'applyhudds@shabujglobal.com',
+            "counsellorName": 'Abu Sayef Khan'
+        },
+        {
+            "counsellorMail": 'internationaladvice@shabujglobal.com',
+            "counsellorName": 'Jalish Mahmud'
+        },
+        {
+            "counsellorMail": 'amina@shabujglobal.org',
+            "counsellorName": 'Amina Sultana Akhy'
+        },
+        {
+            "counsellorMail": 'ananna@shabujglobal.org',
+            "counsellorName": 'Kmrun Nahar Ananna'
+        },
+        {
+            "counsellorMail": 'asmeta@shabujglobal.org',
+            "counsellorName": 'Afsari Rayhan Asmeta'
+        },
+        {
+            "counsellorMail": 'sumaiya@shabujglobal.org',
+            "counsellorName": 'Sumaiya Azad Sadiya'
+        },
+        {
+            "counsellorMail": 'sahil@shabujglobal.org',
+            "counsellorName": 'Mansibul Alam Sahil'
+        },
+        {
+            "counsellorMail": 'shakhawat@shabujglobal.org',
+            "counsellorName": 'Shakhawat Hossain'
+        },
+        {
+            "counsellorMail": 'shakil@shabujglobal.org',
+            "counsellorName": 'Shakil Ahmed'
+        },
+        {
+            "counsellorMail": 'debora.setu@shabujglobal.org',
+            "counsellorName": 'Debora Setu'
+        },
+        {
+            "counsellorMail": 'zim@shabujglobal.org',
+            "counsellorName": 'Jannatul Ferdose Zim'
+        },
+        {
+            "counsellorMail": 'moumita@shabujglobal.org',
+            "counsellorName": 'Moumita Mustari Promi'
+        },
+        {
+            "counsellorMail": 'absar@shabujglobal.org',
+            "counsellorName": 'Abrarur aakter shuvon'
         },
     ];
 

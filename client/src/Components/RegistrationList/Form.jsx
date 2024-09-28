@@ -32,7 +32,7 @@ const Form = ({ int, label, state, setState, filterer, dataArray, selected, setS
                 <p onClick={() => setSelected(int)} className="z-0  cursor-pointer justify-end flex"><FaAngleDown /></p>
             </div>
             {errors.includes(int) ? <Field /> : <></>}
-            <div className={`absolute w-full bg-white shadow-lg p-5 flex flex-col text-start z-10  ${selected == int ? 'flex' : 'hidden'}`}>
+            <div className={`absolute h-[130px] overflow-scroll w-full bg-white shadow-lg p-5 flex flex-col text-start z-10  ${selected == int ? 'flex' : 'hidden'}`}>
                 {filterer ?
                     <div>
                         {selected === int &&
@@ -52,7 +52,7 @@ const Form = ({ int, label, state, setState, filterer, dataArray, selected, setS
                                 ))
                         }
                     </div> :
-                    <div>
+                    <div className=''>
                         {selected === int &&
                             dataArray.map((country) =>
                                 <option onClick={() => {
