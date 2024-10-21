@@ -41,6 +41,10 @@ const SingleRegistration = () => {
 
     const CPs = [
         {
+            "counsellorMail": 'Jubayerr398@gmail.com',
+            "counsellorName": 'Ohee'
+        },
+        {
             "counsellorMail": 'raen@shabujglobal.org',
             "counsellorName": 'Rajen Kumar Deb'
         },

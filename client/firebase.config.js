@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCJsboq8ch0IrE4xUyz9JBSx0dyyGa_I2M",
-    authDomain: "shabuj-global-reg.firebaseapp.com",
-    projectId: "shabuj-global-reg",
-    storageBucket: "shabuj-global-reg.appspot.com",
-    messagingSenderId: "300548347701",
-    appId: "1:300548347701:web:ccaadb76c8c5e8f92a9e7c"
-  };
+  apiKey: "AIzaSyDTOkh9VTfPtV7aBdBM8_f17QDL8DUEFZg",
+  authDomain: "sge-reg.firebaseapp.com",
+  projectId: "sge-reg",
+  storageBucket: "sge-reg.appspot.com",
+  messagingSenderId: "967158956621",
+  appId: "1:967158956621:web:81370596ea1cd726cb5204"
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
